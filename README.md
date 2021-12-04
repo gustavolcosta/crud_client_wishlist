@@ -1,0 +1,1 @@
+# crud_client_wishlist
