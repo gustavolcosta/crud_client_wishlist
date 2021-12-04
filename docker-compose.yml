@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    command: npm start
+    restart: always
+    env_file:
+     - .env
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - db
+    links:
+      - db
+  
+  db:
+    image: mongo
+    container_name: db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata-volume:/data/db
+    environment:
+      MONGO_INITDB_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+
+volumes:
+    dbdata-volume:
